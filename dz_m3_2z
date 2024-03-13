@@ -1,0 +1,15 @@
+import random
+
+def get_numbers_ticket(minimum, maximum, quantity):
+    if not (1 <= minimum <= maximum <= 1000):
+        return []
+    numbers = []
+
+    while len(numbers) < quantity:
+        num = random.randint(minimum, maximum)
+        if num not in numbers:
+            numbers.append(num)
+    return sorted(numbers)
+
+lottery_numbers = get_numbers_ticket(1, 49, 6)
+print("Ваші лотерейні числа:", lottery_numbers)
