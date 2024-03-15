@@ -12,7 +12,8 @@ def get_upcoming_birthdays(users):
         days_until_birthday = (birthday - today).days
         if 0 <= days_until_birthday <= 7:
             if birthday.weekday() in [5, 6]:  
-                next_weekday = (birthday + timedelta(days=7 - birthday.weekday())).replace(hour=0, minute=0, second=0)
+                next_weekday = (birthday + timedelta(days=7 - birthday.weekday()))
+                next_weekday = datetime.combine(next_weekday, datetime.min.time()) 
                 congratulation_date = next_weekday + timedelta(days=1) 
             else:
                 congratulation_date = birthday
@@ -21,7 +22,7 @@ def get_upcoming_birthdays(users):
     return upcoming_birthdays
 
 users = [
-    {"name": "John Wyy", "birthday": "1990.03.12"},
+    {"name": "John Wyy", "birthday": "1990.03.16"},
     {"name": "Alice Roro", "birthday": "1985.03.18"},
     {"name": "Teem Noa", "birthday": "1978.08.30"},
     {"name": "Teem Perog", "birthday": "1978.08.21"}
