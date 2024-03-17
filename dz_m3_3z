@@ -6,29 +6,33 @@ def get_upcoming_birthdays(users):
 
     for user in users:
         birthday = datetime.strptime(user["birthday"], "%Y.%m.%d").date().replace(year=today.year)
-        if birthday < today:
-            birthday = birthday.replace(year=today.year + 1)
-
         days_until_birthday = (birthday - today).days
-        if 0 <= days_until_birthday <= 7:
-            if birthday.weekday() in [5, 6]:  
-                next_weekday = (birthday + timedelta(days=7 - birthday.weekday()))
-                next_weekday = datetime.combine(next_weekday, datetime.min.time()) 
-                congratulation_date = next_weekday + timedelta(days=1) 
-            else:
+        if -1 <= days_until_birthday < 7:
+            if days_until_birthday == 0 and birthday.weekday() >= 5:
+                birthday += timedelta(days=7 - birthday.weekday())
+            elif birthday.weekday() >= 5:
+                birthday += timedelta(days=2)
                 congratulation_date = birthday
             upcoming_birthdays.append({"name": user["name"], "congratulation_date": congratulation_date.strftime("%Y.%m.%d")})
 
     return upcoming_birthdays
 
-users = [
-    {"name": "John Wyy", "birthday": "1990.03.16"},
-    {"name": "Alice Roro", "birthday": "1985.03.18"},
-    {"name": "Teem Noa", "birthday": "1978.08.30"},
-    {"name": "Teem Perog", "birthday": "1978.08.21"}
+users = [{"name": "Mohel Smith", "birthday": "1995.03.13"},
+            {"name": "John Dark", "birthday": "1985.03.14"},
+            {"name": "Mary Dark", "birthday": "1985.03.15"},
+            {"name": "Derek Dark", "birthday": "1985.03.16"},
+            {"name": "Jane Smith", "birthday": "1990.03.17"},
+            {"name": "Liam Smith", "birthday": "1995.03.18"},
+            {"name": "Mohel Smith", "birthday": "1995.03.19"},
+            {"name": "John Dark", "birthday": "1985.03.20"},
+            {"name": "Mary Dark", "birthday": "1985.03.21"},
+            {"name": "Derek Dark", "birthday": "1985.03.22"},
+            {"name": "Jane Smith", "birthday": "1990.03.23"}
 ]
 
 upcoming = get_upcoming_birthdays(users)
 print("Наголошую, потрібно привітати наступних колег з днем народження:")
 for person in upcoming:
     print(f"{person['name']}: {person['congratulation_date']}")
+
+
