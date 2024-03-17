@@ -1,12 +1,17 @@
 import random
 
 def get_numbers_ticket(minimum, maximum, quantity):
-    if not (1 <= minimum <= maximum <= 1000):
+    if not (1 <= minimum <= maximum <= 1000) or quantity <= 0:
+        print("Некоректно введені дані")
         return []
 
     numbers = []
 
     interval_width = maximum - minimum + 1
+
+    if interval_width < quantity:
+        print("Некоректно введені дані: неможливо вибрати достатню кількість лотерейних чисел з цього проміжку")
+        return []
 
     while interval_width < quantity:
         numbers.extend(random.sample(range(minimum, maximum + 1), interval_width))
@@ -19,5 +24,5 @@ def get_numbers_ticket(minimum, maximum, quantity):
 
     return sorted(numbers)
 
-lottery_numbers = get_numbers_ticket(10, 12, 6)
-print("Ваші лотерейні числа:", lottery_numbers)
+lottery_numbers = get_numbers_ticket(10, 14, 6)
+print("Ваші лотерейні числа:", lottery_numbers
