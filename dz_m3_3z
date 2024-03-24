@@ -1,38 +1,36 @@
 from datetime import datetime, timedelta
-
-def get_upcoming_birthdays(users):
-    today = datetime.today().date()
-    upcoming_birthdays = []
-
-    for user in users:
-        birthday = datetime.strptime(user["birthday"], "%Y.%m.%d").date().replace(year=today.year)
-        days_until_birthday = (birthday - today).days
-        if -1 <= days_until_birthday < 7:
-            if days_until_birthday == 0 and birthday.weekday() >= 5:
-                birthday += timedelta(days=7 - birthday.weekday())
-            elif birthday.weekday() >= 5:
-                birthday += timedelta(days=2)
-                congratulation_date = birthday
-            upcoming_birthdays.append({"name": user["name"], "congratulation_date": congratulation_date.strftime("%Y.%m.%d")})
-
-    return upcoming_birthdays
-
-users = [{"name": "Mohel Smith", "birthday": "1995.03.13"},
-            {"name": "John Dark", "birthday": "1985.03.14"},
+users =  [{"name": "Mohel Smith", "birthday": "1995.03.28"},
+            {"name": "John Dark", "birthday": "1985.03.29"},
             {"name": "Mary Dark", "birthday": "1985.03.15"},
             {"name": "Derek Dark", "birthday": "1985.03.16"},
-            {"name": "Jane Smith", "birthday": "1990.03.17"},
-            {"name": "Liam Smith", "birthday": "1995.03.18"},
-            {"name": "Mohel Smith", "birthday": "1995.03.19"},
-            {"name": "John Dark", "birthday": "1985.03.20"},
-            {"name": "Mary Dark", "birthday": "1985.03.21"},
+            {"name": "Jane Smith", "birthday": "1990.03.30"},
+            {"name": "Liam Smith", "birthday": "1995.04.01"},
+            {"name": "Mohel Smith", "birthday": "1995.04.02"},
+            {"name": "John Dark", "birthday": "1985.04.03"},
+            {"name": "Mary Dark", "birthday": "1985.03.24"},
             {"name": "Derek Dark", "birthday": "1985.03.22"},
             {"name": "Jane Smith", "birthday": "1990.03.23"}
 ]
-
-upcoming = get_upcoming_birthdays(users)
-print("Наголошую, потрібно привітати наступних колег з днем народження:")
-for person in upcoming:
-    print(f"{person['name']}: {person['congratulation_date']}")
+def get_upcoming_birthdays(users):
+    today_date = datetime.today().date()
+    upcoming_birthdays = []
+    for user in users:
+        user['birthday'] = datetime.strptime(user["birthday"], '%Y.%m.%d').date()
+    for user in users:
+        birthday_this_year = user["birthday"].replace(year=today_date.year)
+        if birthday_this_year < today_date:
+            birthday_this_year = birthday_this_year.replace(year=today_date.year + 1)
+        # elif birthday_this_year == today_date:
+        #     upcoming_birthdays.append(birthday_this_year)
+        elif (birthday_this_year.weekday == 5):
+            birthday_this_year += timedelta(days=2)
+        elif(birthday_this_year.weekday == 6):
+            birthday_this_year += timedelta(days=1)
+        cound_result_day = (birthday_this_year - today_date).days
+        if cound_result_day == 0 or cound_result_day <= 7:
+            upcoming_birthdays.append({'name':user['name'], 'congratulation_date': birthday_this_year})
+    return upcoming_birthdays
+upcoming_birthdays = get_upcoming_birthdays(users)
+print(f'Список привітань на цьому тижні:{upcoming_birthdays}')
 
 
